@@ -31,6 +31,7 @@ public class AlarmController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(description = "알람 생성 API. 발표용임")
     @PostMapping("/immediate")
     public ResponseEntity<String> createImmediateAlarm() {
         alarmService.createImmediatelyAlarm();
