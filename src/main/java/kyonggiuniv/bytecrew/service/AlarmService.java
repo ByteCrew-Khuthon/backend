@@ -34,7 +34,7 @@ public class AlarmService {
     }
 
     // 알람 확인 처리
-    public void markAlarmAsChecked(int id) {
+    public void markAlarmAsChecked(Long id) {
         Alarm alarm = alarmRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 알람입니다."));
         alarm.setChecking(true);
