@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/alarms")
 @RequiredArgsConstructor
@@ -28,10 +30,16 @@ public class AlarmController {
         return ResponseEntity.ok().build();
     }
 
+    //테스트용도
     @PostMapping("/immediate")
     public ResponseEntity<String> createImmediateAlarm() {
         alarmService.createImmediatelyAlarm();
         return ResponseEntity.ok("알람이 즉시 생성되었습니다.");
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Alarm>> getAllAlarms() {
+        return ResponseEntity.ok(alarmService.getAllAlarmsOrderByDate());
     }
 
 }
