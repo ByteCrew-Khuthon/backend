@@ -46,7 +46,8 @@ public class PigCoughService {
         Date date = new Date(new Date().getTime() - riskCoughTime);
         Long numOfCough = pigCoughRepository.countByBarnIdAndCreatedAtAfter(barn.getId(), date);
         if(numOfCough >= riskCoughCount){
-            firebaseMessagingService.sendNotificationToAll(
+            firebaseMessagingService.sendNotification(
+                    "dH00fniqC-4KSPAkJErh7U:APA91bFgR_-MhCW5s6-qJ575DEPeFnQ4VFv_k0Ydps0ViEd1h-0o7aMszJ7ngrDG9TGe61sZR9ddeSiV2nFiuR13TqE7GqdKFJZGnM5-hQZ43fiDyA2c2g0",
                     "돼지 기침 이상 알림",
                     barn.getLocation()+" 농가에서 돼지 기침 이상 치수를 넘어섰습니다."
                     );

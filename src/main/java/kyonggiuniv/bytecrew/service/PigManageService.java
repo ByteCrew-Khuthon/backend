@@ -62,7 +62,8 @@ public class PigManageService {
     private void checkBarnEnvironment(Barn barn, BarnEnvironment barnEnvironment) {
         if (barnEnvironment.getTemp() > barn.getWantedTemperature() + 2 || barnEnvironment.getTemp() < barn.getWantedTemperature() - 2) {
             //설정온도와 +- 2도 이상 차이나면 실행
-            firebaseMessagingService.sendNotificationToAll(
+            firebaseMessagingService.sendNotification(
+                    "dH00fniqC-4KSPAkJErh7U:APA91bFgR_-MhCW5s6-qJ575DEPeFnQ4VFv_k0Ydps0ViEd1h-0o7aMszJ7ngrDG9TGe61sZR9ddeSiV2nFiuR13TqE7GqdKFJZGnM5-hQZ43fiDyA2c2g0",
                     "사육장 이상 온도 알림",
                     "사육장 온도가 현재 " + barnEnvironment.getTemp() + "도 입니다."
             );
@@ -71,7 +72,8 @@ public class PigManageService {
         ;
         if (barnEnvironment.getHumidity() > barn.getWantedHumidity() - 10 || barnEnvironment.getHumidity() < barn.getWantedHumidity() + 10) {
             //설정습도와 +- 10% 이상 차이나면 실행
-            firebaseMessagingService.sendNotificationToAll(
+            firebaseMessagingService.sendNotification(
+                    "dH00fniqC-4KSPAkJErh7U:APA91bFgR_-MhCW5s6-qJ575DEPeFnQ4VFv_k0Ydps0ViEd1h-0o7aMszJ7ngrDG9TGe61sZR9ddeSiV2nFiuR13TqE7GqdKFJZGnM5-hQZ43fiDyA2c2g0",
                     "사육장 이상 습도 알림",
                     "사육장 습도가 현재 " + barnEnvironment.getHumidity() + "% 입니다."
             );
