@@ -104,6 +104,7 @@ public class PigManageService {
                 resultList.add(item);
             }
         }
+        resultList.addAll(diseaseRiskRepository.findAll());
         return resultList;
     }
 
