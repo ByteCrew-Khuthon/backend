@@ -2,7 +2,6 @@ package kyonggiuniv.bytecrew.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import kyonggiuniv.bytecrew.dto.FcmTokenRequest;
-import kyonggiuniv.bytecrew.dto.NotificationRequest;
 import kyonggiuniv.bytecrew.entity.FcmToken;
 import kyonggiuniv.bytecrew.repository.FcmTokenRepository;
 import kyonggiuniv.bytecrew.service.FirebaseMessagingService;
