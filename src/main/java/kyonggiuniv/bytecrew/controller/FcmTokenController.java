@@ -39,10 +39,4 @@ public class FcmTokenController {
         return ResponseEntity.ok("✅ 토큰 등록 완료");
     }
 
-    @PostMapping("/notify-test")
-    public ResponseEntity<Void> notifyTest() {
-        String realToken ="dmGa7fw-ktuJKlz3Ywnjmb:APA91bFrxSvOlobBsVrplCbodRZxcQnbl1e7nP06E_XJqP_XJie8LgglUPWQLLHVI1CBe-PNrVrT4j-laZRjoxiR6UW2C49HNkjBC58AUFwqJoqOQLHbk";
-        firebaseMessagingService.sendNotification(realToken,"test", "test");
-        return ResponseEntity.ok(null);
-    }
 }
