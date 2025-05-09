@@ -2,6 +2,7 @@ package kyonggiuniv.bytecrew.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class PigCough {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

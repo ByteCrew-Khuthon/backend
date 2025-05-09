@@ -1,13 +1,20 @@
 package kyonggiuniv.bytecrew.service;
 
 
+import kyonggiuniv.bytecrew.controller.PigCoughController;
 import kyonggiuniv.bytecrew.entity.Barn;
 import kyonggiuniv.bytecrew.entity.PigCough;
 import kyonggiuniv.bytecrew.repository.BarnRepository;
 import kyonggiuniv.bytecrew.repository.PigCoughRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PigCoughService {
@@ -38,6 +45,27 @@ public class PigCoughService {
                     barn.getLocation()+" 농가에서 돼지 기침 이상 치수를 넘어섰습니다."
                     );
         }
+    }
+
+    public List<PigCoughController.DailyCoughCountDTO> getCoughLogPerDaily(){
+        return groupCoughsByDate(pigCoughRepository.findAll());
+    }
+
+    private List<PigCoughController.DailyCoughCountDTO> groupCoughsByDate(List<PigCough> coughs) {
+        Map<LocalDate, Long> grouped = coughs.stream()
+                .collect(Collectors.groupingBy(
+                        cough -> convertToLocalDate(cough.getCreatedAt()),
+                        Collectors.counting()
+                ));
+
+        return grouped.entrySet().stream()
+                .map(entry -> new PigCoughController.DailyCoughCountDTO(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparing(PigCoughController.DailyCoughCountDTO::date))
+                .collect(Collectors.toList());
+    }
+
+    private LocalDate convertToLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
 }
