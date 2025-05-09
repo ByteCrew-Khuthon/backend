@@ -22,9 +22,6 @@ public class DiseaseRisk {
     private Double degree;
 
     @Column()
-    private Long range;
-
-    @Column()
     private Date startDate;
 
     @Column()
