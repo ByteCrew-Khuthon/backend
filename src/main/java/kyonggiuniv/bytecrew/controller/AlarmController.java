@@ -23,7 +23,7 @@ public class AlarmController {
 
     // 알람 확인 처리
     @PostMapping("/{id}/check")
-    public ResponseEntity<Void> checkAlarm(@PathVariable int id) {
+    public ResponseEntity<Void> checkAlarm(@PathVariable long id) {
         alarmService.markAlarmAsChecked(id);
         return ResponseEntity.ok().build();
     }
