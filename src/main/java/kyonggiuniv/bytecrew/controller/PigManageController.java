@@ -1,5 +1,6 @@
 package kyonggiuniv.bytecrew.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import kyonggiuniv.bytecrew.entity.BarnEnvironment;
 import kyonggiuniv.bytecrew.entity.DiseaseRisk;
@@ -39,7 +40,7 @@ public class PigManageController {
 
     @Operation(description = "전국 가축 전염 질병 데이터 가져오기")
     @GetMapping("/disease")
-    public ResponseEntity<List<DiseaseRisk>> getDisease(){
+    public ResponseEntity<List<DiseaseRisk>> getDisease() throws JsonProcessingException {
         return ResponseEntity.ok(pigManageService.getDisease());
     }
 

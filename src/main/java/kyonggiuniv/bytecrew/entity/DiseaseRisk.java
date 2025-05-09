@@ -2,10 +2,14 @@ package kyonggiuniv.bytecrew.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
+@Setter
+@Data
 public class DiseaseRisk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,18 +21,9 @@ public class DiseaseRisk {
     @Column()
     private Double longitude;
 
-    @Column()
-    private Double degree;
+    @Column
+    private String location;
 
     @Column()
     private String name;
-
-    @Column
-    private String description;
-
-    @Column()
-    private Date startDate;
-
-    @Column()
-    private Date endDate;
 }

@@ -1,5 +1,8 @@
 package kyonggiuniv.bytecrew.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kyonggiuniv.bytecrew.controller.PigManageController;
 import kyonggiuniv.bytecrew.entity.Barn;
 import kyonggiuniv.bytecrew.entity.BarnEnvironment;
@@ -7,10 +10,19 @@ import kyonggiuniv.bytecrew.entity.DiseaseRisk;
 import kyonggiuniv.bytecrew.repository.BarnEnvironmentRepository;
 import kyonggiuniv.bytecrew.repository.BarnRepository;
 import kyonggiuniv.bytecrew.repository.DiseaseRiskRepository;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PigManageService {
@@ -19,6 +31,7 @@ public class PigManageService {
     private final BarnEnvironmentRepository barnEnvironmentRepository;
     private final FirebaseMessagingService firebaseMessagingService;
     private final DiseaseRiskRepository diseaseRiskRepository;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public PigManageService(BarnRepository barnRepository, BarnEnvironmentRepository barnEnvironmentRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository) {
         this.barnRepository = barnRepository;
@@ -56,8 +69,59 @@ public class PigManageService {
         return barnEnvironmentRepository.findAll();
     }
 
-    public List<DiseaseRisk> getDisease(){
-        return diseaseRiskRepository.findAll();
+    public List<DiseaseRisk> getDisease() throws JsonProcessingException {
+        String url = "http://211.237.50.150:7080/openapi/3eb0feb49f52e6ae704a852010525c2e3f42ba7465a10da8f5e28ee53a337be5/json/Grid_20151204000000000316_1/44201/45200";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(response.getBody());
+
+        JsonNode rows = root
+                .path("Grid_20151204000000000316_1")
+                .path("row");
+
+        List<DiseaseRisk> resultList = new ArrayList<>();
+
+        for (JsonNode node : rows) {
+            if(node.path("LVSTCKSPC_NM").asText().contains("돼지")){
+                DiseaseRisk item = new DiseaseRisk();
+                String location = node.path("FARM_LOCPLC").asText();
+                Coordinates coordinates = getCoordinates(location);
+
+                item.setName(node.path("LKNTS_NM").asText());
+                item.setLocation(location);
+                item.setLatitude(coordinates.latitude);
+                item.setLongitude(coordinates.longitude);
+                resultList.add(item);
+            }
+        }
+        return resultList;
     }
+
+    public Coordinates getCoordinates(String address){ //코드 별로
+        String kakaoApiKey = "028226f3dce00ae1f0d3a4513ceffc0b";
+        String kakaoCoordinatesUrl = "https://dapi.kakao.com/v2/local/search/address.json?query={query}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "KakaoAK "+kakaoApiKey);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("query", address);
+
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        JsonNode response = restTemplate.exchange(
+                kakaoCoordinatesUrl,
+                HttpMethod.GET,
+                entity,
+                JsonNode.class,
+                uriVariables
+        ).getBody();
+
+        double latitude = response.get("documents").get(0).get("x").asDouble();
+        double longitude = response.get("documents").get(0).get("y").asDouble();
+
+        return new Coordinates(latitude, longitude);
+    }
+
+    public record Coordinates(double latitude, double longitude){}
 
 }
