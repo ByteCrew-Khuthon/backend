@@ -24,7 +24,7 @@ public class PigCoughController {
     @Operation(description = "기침했을때 전달하는곳")
     @PostMapping("/")
     public ResponseEntity<Void> cough(){
-        pigCoughService.pigCoughed("경기도 화성시 우정읍 운평길124번길 60");
+        pigCoughService.pigCoughed("경기도 평택시 오성면 양교길 267");
         return ResponseEntity.ok().build();
     }
 
