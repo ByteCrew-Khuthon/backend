@@ -21,6 +21,12 @@ public class DiseaseRisk {
     private Double degree;
 
     @Column()
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column()
     private Date startDate;
 
     @Column()
