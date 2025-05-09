@@ -26,12 +26,14 @@ public class PigCoughService {
     private final long riskCoughCount = 10;
     private final FirebaseMessagingService firebaseMessagingService;
     private final DiseaseRiskRepository diseaseRiskRepository;
+    private final AlarmService alarmService;
 
-    public PigCoughService(PigCoughRepository pigCoughRepository, BarnRepository barnRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository) {
+    public PigCoughService(PigCoughRepository pigCoughRepository, BarnRepository barnRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository, AlarmService alarmService) {
         this.pigCoughRepository = pigCoughRepository;
         this.barnRepository = barnRepository;
         this.firebaseMessagingService = firebaseMessagingService;
         this.diseaseRiskRepository = diseaseRiskRepository;
+        this.alarmService = alarmService;
     }
 
     public void pigCoughed(String location){
@@ -54,6 +56,7 @@ public class PigCoughService {
             diseaseRisk.setLongitude(barn.getLongitude());
             diseaseRisk.setName("돼지 기침 위험 수치 발생");
             diseaseRiskRepository.save(diseaseRisk);
+            alarmService.createAlarm("돼지 기침 위험 수치 발생", barn.getLocation()+" 농가에서 돼지 기침 이상 치수를 넘어섰습니다.");
         }
     }
 

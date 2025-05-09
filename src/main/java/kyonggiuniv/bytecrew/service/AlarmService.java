@@ -41,6 +41,15 @@ public class AlarmService {
         return alarm;
     }
 
+    public void createAlarm(String title, String description){
+        Alarm alarm = new Alarm();
+        alarm.setTitle(title);
+        alarm.setDescription(description);
+        alarm.setDate(new Date());
+        alarm.setChecking(false);
+        alarmRepository.save(alarm);
+    }
+
 
 
     // 확인되지 않은 알람 중 최신 1개 조회

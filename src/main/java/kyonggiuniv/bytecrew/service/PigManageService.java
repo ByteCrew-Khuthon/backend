@@ -37,9 +37,10 @@ public class PigManageService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ChatClient chatClient;
     private final PigCoughService pigCoughService;
+    private final AlarmService alarmService;
 
     @Autowired
-    public PigManageService(BarnRepository barnRepository, BarnEnvironmentRepository barnEnvironmentRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository, ChatModel chatModel, PigCoughService pigCoughService) {
+    public PigManageService(BarnRepository barnRepository, BarnEnvironmentRepository barnEnvironmentRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository, ChatModel chatModel, PigCoughService pigCoughService, AlarmService alarmService) {
         this.barnRepository = barnRepository;
         this.barnEnvironmentRepository = barnEnvironmentRepository;
         this.firebaseMessagingService = firebaseMessagingService;
@@ -48,13 +49,12 @@ public class PigManageService {
                 .builder(chatModel)
                 .build();
         this.pigCoughService = pigCoughService;
+        this.alarmService = alarmService;
     }
 
 
     public void saveBarnEnvironment(BarnEnvironment barnEnvironment){
         Barn barn = barnRepository.findById(barnEnvironment.getBarnId().longValue());
-        System.out.println("bran id"+barn.getId());
-        System.out.println("herere" +barnEnvironment.toString());
         barnEnvironmentRepository.save(barnEnvironment);
         checkBarnEnvironment(barn, barnEnvironment);
     }
@@ -66,6 +66,7 @@ public class PigManageService {
                     "사육장 이상 온도 알림",
                     "사육장 온도가 현재 " + barnEnvironment.getTemp() + "도 입니다."
             );
+            alarmService.createAlarm("사육장 이상 온도 알림", "사육장 온도가 현재 " + barnEnvironment.getTemp() + "도 입니다.");
         }
         ;
         if (barnEnvironment.getHumidity() > barn.getWantedHumidity() - 10 || barnEnvironment.getHumidity() < barn.getWantedHumidity() + 10) {
@@ -74,6 +75,7 @@ public class PigManageService {
                     "사육장 이상 습도 알림",
                     "사육장 습도가 현재 " + barnEnvironment.getHumidity() + "% 입니다."
             );
+            alarmService.createAlarm("사육장 이상 습도 알림", "사육장 습도가 현재 " + barnEnvironment.getHumidity() + "% 입니다.");
         }
     }
 
@@ -146,7 +148,6 @@ public class PigManageService {
         sb.append("\n");
         sb.append("마지막으로 현재 농장의 온습도 데이터는 다음과 같아.\n");
         sb.append(getBarnEnvironments().toString());
-        System.out.println("gpt log"+sb.toString());
         return chatClient.prompt().user(sb.toString()).call().content();
     }
 
