@@ -25,11 +25,13 @@ public class ScrapingService {
         for (Element article : articleElements) {
             Element titleElement = article.selectFirst("h2.cmp.c2");
             Element contentElement = article.selectFirst("p.ffd.cmp.c2");
+            Element urlElement = article.selectFirst("a[href]");
 
             if (titleElement != null && contentElement != null) {
                 String title = titleElement.text();
                 String content = contentElement.text();
-                articles.add(new ArticleDto(title, content));
+                String url = "http://www.pigpeople.net"+urlElement.attr("href");
+                articles.add(new ArticleDto(title, content,url));
             }
         }
 

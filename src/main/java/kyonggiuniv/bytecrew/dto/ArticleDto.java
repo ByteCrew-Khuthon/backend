@@ -10,9 +10,11 @@ import lombok.Setter;
 public class ArticleDto {
     private String title;
     private String content;
+    private String URL;
 
-    public ArticleDto(String title, String content) {
+    public ArticleDto(String title, String content,String URL) {
         this.title = title;
         this.content = content;
+        this.URL = URL;
     }
 }
