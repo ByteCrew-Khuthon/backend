@@ -52,7 +52,9 @@ public class PigManageService {
 
 
     public void saveBarnEnvironment(BarnEnvironment barnEnvironment){
-        Barn barn = barnRepository.findById(barnEnvironment.getBarnId()).get();
+        Barn barn = barnRepository.findById(barnEnvironment.getBarnId().longValue());
+        System.out.println("bran id"+barn.getId());
+        System.out.println("herere" +barnEnvironment.toString());
         barnEnvironmentRepository.save(barnEnvironment);
         checkBarnEnvironment(barn, barnEnvironment);
     }
@@ -134,7 +136,7 @@ public class PigManageService {
     }
 
     public String getEvaluation(){
-        Barn barn = barnRepository.findById(1L).get();
+        Barn barn = barnRepository.findById(1L);
         StringBuilder sb = new StringBuilder();
         sb.append("현재 돼지농장 농장주는 이런 농장을 운영하고 있어.\n");
         sb.append(barn.getDescription());

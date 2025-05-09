@@ -1,5 +1,6 @@
 package kyonggiuniv.bytecrew.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 public class BarnEnvironment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

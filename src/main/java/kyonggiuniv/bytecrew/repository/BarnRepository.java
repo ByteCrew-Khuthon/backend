@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BarnRepository extends JpaRepository<Barn, Long> {
     Barn findByLocation(String location);
+    Barn findById(long id);
 }
