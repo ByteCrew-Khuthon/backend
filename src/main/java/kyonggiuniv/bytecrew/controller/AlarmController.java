@@ -1,5 +1,6 @@
 package kyonggiuniv.bytecrew.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kyonggiuniv.bytecrew.entity.Alarm;
 import kyonggiuniv.bytecrew.service.AlarmService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     // 가장 최근의 check = false 알람 조회
+    @Operation(description = "아직 확인 안한 알람 받기")
     @GetMapping("/latest")
     public ResponseEntity<Alarm> getLatestUncheckedAlarm() {
         return alarmService.getUncheckedLatestAlarm()
@@ -22,6 +24,7 @@ public class AlarmController {
     }
 
     // 알람 확인 처리
+    @Operation(description = "알람 확인 처리")
     @PostMapping("/{id}/check")
     public ResponseEntity<Void> checkAlarm(@PathVariable long id) {
         alarmService.markAlarmAsChecked(id);
