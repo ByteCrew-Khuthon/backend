@@ -44,4 +44,10 @@ public class PigManageController {
         return ResponseEntity.ok(pigManageService.getDisease());
     }
 
+    @Operation(description = "농장 종합 평가 받기")
+    @GetMapping("/evaluation")
+    public ResponseEntity<String> getEvaluation(){
+        return ResponseEntity.ok(pigManageService.getEvaluation());
+    }
+
 }

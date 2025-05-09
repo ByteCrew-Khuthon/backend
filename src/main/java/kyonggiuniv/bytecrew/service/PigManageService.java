@@ -10,6 +10,9 @@ import kyonggiuniv.bytecrew.entity.DiseaseRisk;
 import kyonggiuniv.bytecrew.repository.BarnEnvironmentRepository;
 import kyonggiuniv.bytecrew.repository.BarnRepository;
 import kyonggiuniv.bytecrew.repository.DiseaseRiskRepository;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,12 +35,19 @@ public class PigManageService {
     private final FirebaseMessagingService firebaseMessagingService;
     private final DiseaseRiskRepository diseaseRiskRepository;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final ChatClient chatClient;
+    private final PigCoughService pigCoughService;
 
-    public PigManageService(BarnRepository barnRepository, BarnEnvironmentRepository barnEnvironmentRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository) {
+    @Autowired
+    public PigManageService(BarnRepository barnRepository, BarnEnvironmentRepository barnEnvironmentRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository, ChatModel chatModel, PigCoughService pigCoughService) {
         this.barnRepository = barnRepository;
         this.barnEnvironmentRepository = barnEnvironmentRepository;
         this.firebaseMessagingService = firebaseMessagingService;
         this.diseaseRiskRepository = diseaseRiskRepository;
+        this.chatClient = ChatClient
+                .builder(chatModel)
+                .build();
+        this.pigCoughService = pigCoughService;
     }
 
 
@@ -120,6 +130,21 @@ public class PigManageService {
         double longitude = response.get("documents").get(0).get("y").asDouble();
 
         return new Coordinates(latitude, longitude);
+    }
+
+    public String getEvaluation(){
+        Barn barn = barnRepository.findById(1L).get();
+        StringBuilder sb = new StringBuilder();
+        sb.append("현재 돼지농장 농장주는 이런 농장을 운영하고 있어.\n");
+        sb.append(barn.getDescription());
+        sb.append("\n");
+        sb.append("그리고 현재 농장의 돼지 기침 데이터는 이렇게 되어있어.(데이터 형식은 날짜+기침횟수야.)\n");
+        sb.append(pigCoughService.getCoughLogPerDaily().toString());
+        sb.append("\n");
+        sb.append("마지막으로 현재 농장의 온습도 데이터는 다음과 같아.\n");
+        sb.append(getBarnEnvironments().toString());
+        System.out.println("gpt log"+sb.toString());
+        return chatClient.prompt().user(sb.toString()).call().content();
     }
 
     public record Coordinates(double latitude, double longitude){}

@@ -23,18 +23,16 @@ public class PigCoughController {
 
     @Operation(description = "기침했을때 전달하는곳")
     @PostMapping("/")
-    public ResponseEntity<Void> cough(PigBarnLocation location){
-        pigCoughService.pigCoughed(location.location());
+    public ResponseEntity<Void> cough(){
+        pigCoughService.pigCoughed("경기도 화성시 우정읍 운평길124번길 60");
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "주변 ")
+    @Operation(description = "일자별 기침 횟수 기록 반환")
     @GetMapping("/")
     public ResponseEntity<List<DailyCoughCountDTO>> coughLogPerDaily(){
         return ResponseEntity.ok(pigCoughService.getCoughLogPerDaily());
     }
-
-    public record PigBarnLocation(String location){}
 
     public record DailyCoughCountDTO(LocalDate date, long coughCount) {}
 }

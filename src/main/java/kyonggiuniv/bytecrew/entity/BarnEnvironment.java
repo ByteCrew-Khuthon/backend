@@ -1,10 +1,9 @@
 package kyonggiuniv.bytecrew.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Date;
 
 @Entity
 @Builder
@@ -18,8 +17,14 @@ public class BarnEnvironment {
 
     private Long barnId;
 
+    private Date date = new Date();
+
     @Column()
     private Double temp;
 
     private Double humidity;
+
+    public String toString(){
+        return "날짜 : "+date+" - 온도: "+temp+", 습도: "+humidity;
+    }
 }

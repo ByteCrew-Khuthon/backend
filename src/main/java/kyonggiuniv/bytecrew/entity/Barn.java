@@ -19,6 +19,11 @@ public class Barn {
     @Column()
     private Double longitude;
 
+    @Column()
     private Double wantedTemperature;
+    @Column()
     private Double wantedHumidity;
+
+    @Column()
+    private String description;
 }
