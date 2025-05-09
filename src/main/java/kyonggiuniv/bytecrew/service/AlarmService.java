@@ -16,7 +16,7 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
 
     // 6
-    @Scheduled(cron = "0 0 6,12,18 * * *")  // 매일 오전 6시, 정오 12시, 오후 6시
+    @Scheduled(cron = "0 0 6,12,18,21,22,23 * * *")  // 매일 오전 6시, 정오 12시, 오후 6시
     public void createScheduledAlarm() {
         Alarm alarm = new Alarm();
         Date date = new Date();
