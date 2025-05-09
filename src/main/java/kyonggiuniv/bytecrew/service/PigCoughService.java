@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 public class PigCoughService {
     private final PigCoughRepository pigCoughRepository;
     private final BarnRepository barnRepository;
-    private final long riskCoughTime = 3 * 60 * 60 * 1000;
-    private final long riskCoughCount = 10;
+    private final long riskCoughTime = 30 * 60 * 1000;
+    private final long riskCoughCount = 4;
     private final FirebaseMessagingService firebaseMessagingService;
     private final DiseaseRiskRepository diseaseRiskRepository;
     private final AlarmService alarmService;

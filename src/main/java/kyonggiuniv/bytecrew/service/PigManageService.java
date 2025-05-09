@@ -69,7 +69,7 @@ public class PigManageService {
             );
             alarmService.createAlarm("사육장 이상 온도 알림", "사육장 온도가 현재 " + barnEnvironment.getTemp() + "도 입니다.");
         }
-        ;
+
         if (barnEnvironment.getHumidity() > barn.getWantedHumidity() - 10 || barnEnvironment.getHumidity() < barn.getWantedHumidity() + 10) {
             //설정습도와 +- 10% 이상 차이나면 실행
             firebaseMessagingService.sendNotification(
