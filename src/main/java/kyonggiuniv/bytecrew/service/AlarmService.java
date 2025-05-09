@@ -29,15 +29,16 @@ public class AlarmService {
         alarmRepository.save(alarm);
     }
 
-    public void createImmediatelyAlarm() {
+    public Alarm createImmediatelyAlarm() {
         Alarm alarm = new Alarm();
         Date date = new Date();
         alarm.setDate(date);
         alarm.setChecking(false);
         alarm.setTitle("돼지 자동 먹이 알림");
         alarm.setDescription(date.getMonth()+1+"월 "+date.getDate()+"일 "+date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
-
         alarmRepository.save(alarm);
+
+        return alarm;
     }
 
 

@@ -3,6 +3,7 @@ package kyonggiuniv.bytecrew.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import kyonggiuniv.bytecrew.entity.Alarm;
 import kyonggiuniv.bytecrew.service.AlarmService;
+import kyonggiuniv.bytecrew.service.FirebaseMessagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 public class AlarmController {
 
     private final AlarmService alarmService;
+    private final FirebaseMessagingService firebaseMessagingService;
 
     // 가장 최근의 check = false 알람 조회
     @Operation(description = "아직 확인 안한 알람 받기")
@@ -36,7 +38,9 @@ public class AlarmController {
     @Operation(description = "알람 생성 API. 발표용임")
     @PostMapping("/immediate")
     public ResponseEntity<String> createImmediateAlarm() {
-        alarmService.createImmediatelyAlarm();
+        Alarm alarm =alarmService.createImmediatelyAlarm();
+        String realToken ="dH00fniqC-4KSPAkJErh7U:APA91bFgR_-MhCW5s6-qJ575DEPeFnQ4VFv_k0Ydps0ViEd1h-0o7aMszJ7ngrDG9TGe61sZR9ddeSiV2nFiuR13TqE7GqdKFJZGnM5-hQZ43fiDyA2c2g0";
+        firebaseMessagingService.sendNotification(realToken,alarm.getTitle(), alarm.getDescription());
         return ResponseEntity.ok("알람이 즉시 생성되었습니다.");
     }
 
