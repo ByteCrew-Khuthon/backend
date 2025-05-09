@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class ScrapingService {
 
-    private static final String URL = "http://www.pigpeople.net/news/article_list_all.html";
+    private static final String URL = "http://www.pigpeople.net/news/section.html?sec_no=102";
 
     public List<ArticleDto> scrapeArticles() throws IOException {
         List<ArticleDto> articles = new ArrayList<>();
