@@ -23,7 +23,7 @@ public class AlarmService {
         Date date = new Date();
         alarm.setDate(date);
         alarm.setTitle("돼지 자동 먹이 알림");
-        alarm.setDescription(date.getMonth()+"월"+date.getDate()+"일"+date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
+        alarm.setDescription(date.getMonth()+1+"월 "+date.getDate()+"일 "+date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
         alarm.setChecking(false);
 
         alarmRepository.save(alarm);
@@ -35,7 +35,7 @@ public class AlarmService {
         alarm.setDate(date);
         alarm.setChecking(false);
         alarm.setTitle("돼지 자동 먹이 알림");
-        alarm.setDescription(date.getMonth()+"월"+date.getDate()+"일"+date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
+        alarm.setDescription(date.getMonth()+1+"월 "+date.getDate()+"일 "+date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
 
         alarmRepository.save(alarm);
     }

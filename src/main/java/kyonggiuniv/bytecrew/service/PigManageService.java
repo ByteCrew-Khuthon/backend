@@ -23,10 +23,6 @@ public class PigManageService {
         this.firebaseMessagingService = firebaseMessagingService;
     }
 
-    @Scheduled(fixedRate = 6 * 60 * 1000)
-    public void putFeed(){
-        //
-    }
 
     public void saveBarnEnvironment(BarnEnvironment barnEnvironment){
         Barn barn = barnRepository.findById(barnEnvironment.getBarnId()).get();
