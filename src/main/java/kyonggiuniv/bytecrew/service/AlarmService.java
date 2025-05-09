@@ -15,18 +15,19 @@ public class AlarmService {
 
     private final AlarmRepository alarmRepository;
 
-    // 일정 주기마다 알람 자동 생성 (예: 1분마다) 60초
-    @Scheduled(fixedRate = 60000)
+    // 6
+    @Scheduled(cron = "0 0 6,12,18 * * *")  // 매일 오전 6시, 정오 12시, 오후 6시
     public void createScheduledAlarm() {
         Alarm alarm = new Alarm();
         Date date = new Date();
         alarm.setDate(date);
         alarm.setTitle("돼지 자동 먹이 알림");
-        alarm.setDescription(String.valueOf(date.getHours())+"시 "+String.valueOf(date.getMinutes())+"분에 밥을 자동으로 공급했습니다.");
+        alarm.setDescription(date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
         alarm.setChecking(false);
 
         alarmRepository.save(alarm);
     }
+
 
     // 확인되지 않은 알람 중 최신 1개 조회
     public Optional<Alarm> getUncheckedLatestAlarm() {
