@@ -3,8 +3,10 @@ package kyonggiuniv.bytecrew.service;
 
 import kyonggiuniv.bytecrew.controller.PigCoughController;
 import kyonggiuniv.bytecrew.entity.Barn;
+import kyonggiuniv.bytecrew.entity.DiseaseRisk;
 import kyonggiuniv.bytecrew.entity.PigCough;
 import kyonggiuniv.bytecrew.repository.BarnRepository;
+import kyonggiuniv.bytecrew.repository.DiseaseRiskRepository;
 import kyonggiuniv.bytecrew.repository.PigCoughRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,13 @@ public class PigCoughService {
     private final long riskCoughTime = 3 * 60 * 60 * 1000;
     private final long riskCoughCount = 10;
     private final FirebaseMessagingService firebaseMessagingService;
+    private final DiseaseRiskRepository diseaseRiskRepository;
 
-    public PigCoughService(PigCoughRepository pigCoughRepository, BarnRepository barnRepository, FirebaseMessagingService firebaseMessagingService) {
+    public PigCoughService(PigCoughRepository pigCoughRepository, BarnRepository barnRepository, FirebaseMessagingService firebaseMessagingService, DiseaseRiskRepository diseaseRiskRepository) {
         this.pigCoughRepository = pigCoughRepository;
         this.barnRepository = barnRepository;
         this.firebaseMessagingService = firebaseMessagingService;
+        this.diseaseRiskRepository = diseaseRiskRepository;
     }
 
     public void pigCoughed(String location){
@@ -44,6 +48,12 @@ public class PigCoughService {
                     "돼지 기침 이상 알림",
                     barn.getLocation()+" 농가에서 돼지 기침 이상 치수를 넘어섰습니다."
                     );
+            DiseaseRisk diseaseRisk = new DiseaseRisk();
+            diseaseRisk.setLocation(barn.getLocation());
+            diseaseRisk.setLatitude(barn.getLatitude());
+            diseaseRisk.setLongitude(barn.getLongitude());
+            diseaseRisk.setName("돼지 기침 위험 수치 발생");
+            diseaseRiskRepository.save(diseaseRisk);
         }
     }
 
