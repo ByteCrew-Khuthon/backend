@@ -2,6 +2,7 @@ package kyonggiuniv.bytecrew.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import kyonggiuniv.bytecrew.entity.BarnEnvironment;
+import kyonggiuniv.bytecrew.entity.DiseaseRisk;
 import kyonggiuniv.bytecrew.service.PigManageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,13 @@ public class PigManageController {
     public ResponseEntity<Void> putBarnEnvironment(BarnEnvironment environment){
         pigManageService.saveBarnEnvironment(environment);
         return ResponseEntity.ok(null);
+    }
+
+
+    @Operation(description = "전국 가축 전염 질병 데이터 가져오기")
+    @GetMapping("/disease")
+    public ResponseEntity<List<DiseaseRisk>> getDisease(){
+        return ResponseEntity.ok(pigManageService.getDisease());
     }
 
 }

@@ -28,7 +28,7 @@ public class PigCoughController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "최근 기침 기록 받아오기")
+    @Operation(description = "주변 ")
     @GetMapping("/")
     public ResponseEntity<List<DailyCoughCountDTO>> coughLogPerDaily(){
         return ResponseEntity.ok(pigCoughService.getCoughLogPerDaily());
