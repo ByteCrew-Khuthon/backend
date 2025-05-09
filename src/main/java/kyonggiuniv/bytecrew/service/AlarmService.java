@@ -28,6 +28,18 @@ public class AlarmService {
         alarmRepository.save(alarm);
     }
 
+    public void createImmediatelyAlarm() {
+        Alarm alarm = new Alarm();
+        Date date = new Date();
+        alarm.setDate(date);
+        alarm.setChecking(false);
+        alarm.setTitle("돼지 자동 먹이 알림");
+        alarm.setDescription(date.getHours() + "시 " + date.getMinutes() + "분에 밥을 자동으로 공급했습니다.");
+
+        alarmRepository.save(alarm);
+    }
+
+
 
     // 확인되지 않은 알람 중 최신 1개 조회
     public Optional<Alarm> getUncheckedLatestAlarm() {

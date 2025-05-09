@@ -27,4 +27,11 @@ public class AlarmController {
         alarmService.markAlarmAsChecked(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/immediate")
+    public ResponseEntity<String> createImmediateAlarm() {
+        alarmService.createImmediatelyAlarm();
+        return ResponseEntity.ok("알람이 즉시 생성되었습니다.");
+    }
+
 }
