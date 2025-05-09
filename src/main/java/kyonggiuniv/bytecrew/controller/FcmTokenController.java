@@ -1,5 +1,6 @@
 package kyonggiuniv.bytecrew.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kyonggiuniv.bytecrew.dto.FcmTokenRequest;
 import kyonggiuniv.bytecrew.dto.NotificationRequest;
 import kyonggiuniv.bytecrew.entity.FcmToken;
@@ -20,6 +21,7 @@ public class FcmTokenController {
     private final FcmTokenRepository fcmTokenRepository;
     private final FirebaseMessagingService firebaseMessagingService;
 
+    @Operation(description = "FCM Token 전달")
     @PostMapping("/register")
     public ResponseEntity<String> registerToken(@RequestBody FcmTokenRequest request) {
         String token = request.getFcmToken();
